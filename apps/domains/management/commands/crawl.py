@@ -40,8 +40,10 @@ class Command(BaseCommand):
 
                 article.parse()
                 article.nlp()
-                self.save(domain, article)
+                if article.summary and article.title:
+                    self.save(domain, article)
 
+            crawling.success = True
         except Exception as e:
             crawling.msg = e
             crawling.success = False
