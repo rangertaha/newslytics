@@ -16,9 +16,6 @@ class Place(models.Model):
     def get_absolute_url(self):
         return 'places:detail', (self.slug,)
 
-    def save(self):
-        instance = super(Place, self).save(commit=False)
-        instance.slug = slugify(instance.title)
-        instance.save()
-
-        return instance
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Place, self).save(*args, **kwargs)

@@ -23,6 +23,10 @@ from apps.people.models import Person
 class Command(BaseCommand):
     help = 'Crawl domains for articles'
 
+    def add_arguments(self, parser):
+        parser.add_argument('articles', nargs='+', type=bool)
+        parser.add_argument('feeds', nargs='+', type=bool)
+
     def handle(self, *args, **options):
         domains = Domain.objects.filter(enabled=True)
         for domain in domains:

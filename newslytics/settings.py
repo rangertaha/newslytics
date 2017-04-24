@@ -44,6 +44,11 @@ INSTALLED_APPS = [
     'apps.people',
     'apps.places',
 
+    'filer',
+    'easy_thumbnails',
+    'fontawesome',
+
+
     #'places',
 ]
 

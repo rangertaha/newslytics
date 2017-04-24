@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-# Create your models here.
+from filer.fields.image import FilerImageField
+from fontawesome.fields import IconField
 from django.db import models
 
 
@@ -9,10 +10,16 @@ class Person(models.Model):
     first = models.CharField(max_length=100, blank=True)
     middle = models.CharField(max_length=100, blank=True)
     last = models.CharField(max_length=100, blank=True)
+    image = FilerImageField(related_name="people")
 
     def __unicode__(self):
         return '%s %s %s' % (self.first, self.middle, self.last)
 
-    # @models.permalink
-    # def get_absolute_url(self):
-    #     return 'people:detail', (self.pk, )
+
+class Social(models.Model):
+    icon = IconField()
+    name = models.CharField(max_length=100, blank=True, null=True)
+    url = models.URLField(max_length=250, blank=True)
+
+    person = models.ForeignKey(
+        Person, related_name='accounts', blank=True, null=True)
