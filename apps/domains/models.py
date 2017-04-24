@@ -34,11 +34,6 @@ class Domain(models.Model):
     # def get_absolute_url(self):
     #     return 'domains:detail', (self.pk, )
 
-    # def save(self, *args, **kwargs):
-    #     text = '{0}.{1}.{2}'.format(self.sub, self.domain, self.suffix)
-    #     self.slug = slugify(text)
-    #     super(Domain, self).save(*args, **kwargs)
-
 
 class Crawl(models.Model):
     domain = models.ForeignKey(Domain, blank=True)

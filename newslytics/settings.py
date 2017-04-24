@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'apps.articles',
     'apps.people',
     'apps.places',
+
+    #'places',
 ]
 
 MIDDLEWARE = [
@@ -164,6 +166,10 @@ SUIT_CONFIG = {
     'LIST_PER_PAGE': 100
 }
 
+PLACES_MAPS_API_KEY='YourAwesomeUltraSecretKey'
+MAP_WIDGET_HEIGHT=480
+MAP_OPTIONS={}
+MARKER_OPTIONS={}
 
 try:
     from local_settings import *
