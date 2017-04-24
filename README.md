@@ -1,3 +1,10 @@
-# crawlytics
+# newslytics
 
-User interface to help with a web crawling and analytics projects. 
+User interface to help with a news crawling and analytics projects. 
+
+
+
+
+
+
+

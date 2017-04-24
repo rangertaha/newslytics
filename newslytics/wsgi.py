@@ -1,5 +1,5 @@
 """
-WSGI config for crawlytics project.
+WSGI config for newslytics project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

@@ -3,12 +3,12 @@ from __future__ import unicode_literals
 
 from django.views import generic
 
-from .models import Domain
+from .models import Article
 
 
 class ListView(generic.ListView):
-    model = Domain
+    model = Article
 
 
 class DetailView(generic.DetailView):
-    model = Domain
+    model = Article
