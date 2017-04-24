@@ -10,6 +10,7 @@ from .models import Article, Keyword, Language
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('published', 'title')
+    list_display_links = ('published', 'title')
     prepopulated_fields = {'slug': ('title',), }
 
 

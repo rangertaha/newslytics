@@ -16,10 +16,13 @@ class Person(models.Model):
         return '%s %s %s' % (self.first, self.middle, self.last)
 
 
-class Social(models.Model):
+class SocialAccount(models.Model):
     icon = IconField()
     name = models.CharField(max_length=100, blank=True, null=True)
     url = models.URLField(max_length=250, blank=True)
 
     person = models.ForeignKey(
         Person, related_name='accounts', blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = "Social Accounts"

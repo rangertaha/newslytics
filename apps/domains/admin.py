@@ -10,9 +10,11 @@ from .models import Domain, Crawl
 @admin.register(Domain)
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('url', 'title')
+    list_display_links = ('url', 'title')
 
 
 @admin.register(Crawl)
 class CrawlAdmin(admin.ModelAdmin):
     list_display = ('created', 'success')
+    list_display_links = ('created', 'success')
 
