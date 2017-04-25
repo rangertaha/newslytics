@@ -30,7 +30,7 @@ class Domain(models.Model):
     rank = models.IntegerField(default=0)
 
     def __unicode__(self):
-        return self.title
+        return '{0}.{1}.{2}'.format(self.sub, self.domain, self.suffix)
 
     # @models.permalink
     # def get_absolute_url(self):
@@ -46,3 +46,11 @@ class Crawl(models.Model):
     def __unicode__(self):
         return '%s' % (self.id, )
 
+
+class Feed(models.Model):
+    domain = models.ForeignKey(
+        Domain, related_name='feeds', blank=True, null=True)
+    url = models.URLField(max_length=250, blank=False, null=True)
+
+    def __unicode__(self):
+        return self.url

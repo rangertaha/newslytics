@@ -6,15 +6,6 @@ from django.utils.text import slugify
 from filer.fields.image import FilerImageField
 
 
-class Feed(models.Model):
-    domain = models.ForeignKey(
-        'domains.Domain', related_name='feeds', blank=True, null=True)
-    url = models.URLField(max_length=250, blank=False, null=True)
-
-    def __unicode__(self):
-        return self.url
-
-
 class Keyword(models.Model):
     word = models.CharField(max_length=30, blank=False)
     freq = models.IntegerField(blank=True)

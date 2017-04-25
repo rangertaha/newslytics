@@ -14,6 +14,7 @@ class ArticleAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',), }
     list_select_related = ('language', 'icon')
     raw_id_fields = ('authors', 'places', 'keywords')
+    search_fields = ('title', 'description', 'url', 'text', 'html')
 
 
 @admin.register(Keyword)
