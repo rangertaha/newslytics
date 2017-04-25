@@ -11,6 +11,7 @@ class Person(models.Model):
     middle = models.CharField(max_length=100, blank=True)
     last = models.CharField(max_length=100, blank=True)
     image = FilerImageField(related_name="people")
+    description = models.TextField(blank=True, null=True)
 
     def __unicode__(self):
         return '%s %s %s' % (self.first, self.middle, self.last)
