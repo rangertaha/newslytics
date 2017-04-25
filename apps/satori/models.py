@@ -44,3 +44,18 @@ class Channel(models.Model):
             for message in mailbox:
                 print('Got message "{0}"'.format(message))
                 yield message
+
+
+class Event(models.Model):
+    SIGNAL_CHOICES = (
+        ('save', 'Save'),
+        ('update', 'Update'),
+    )
+    signal = models.CharField(
+        max_length=5, choices=SIGNAL_CHOICES, default='save')
+    name = models.CharField(max_length=30, blank=True, null=True)
+    #topic = models.ForeignKey('topics.Topic', blank=True, null=True)
+    channel = models.ForeignKey(Channel, blank=True, null=True)
+
+    def __unicode__(self):
+        return self.name

@@ -27,6 +27,7 @@ class Domain(models.Model):
     description = models.TextField(blank=True, null=True)
     image = FilerImageField(related_name="domain", blank=True, null=True)
     enabled = models.BooleanField(default=True)
+
     rank = models.IntegerField(default=0)
 
     def __unicode__(self):
