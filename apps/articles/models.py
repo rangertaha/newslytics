@@ -3,6 +3,16 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.utils.text import slugify
+from filer.fields.image import FilerImageField
+
+
+class Feed(models.Model):
+    domain = models.ForeignKey(
+        'domains.Domain', related_name='feeds', blank=True, null=True)
+    url = models.URLField(max_length=250, blank=False, null=True)
+
+    def __unicode__(self):
+        return self.url
 
 
 class Keyword(models.Model):
@@ -30,11 +40,12 @@ class Article(models.Model):
     html = models.TextField(blank=True, null=True)
     published = models.DateTimeField(blank=True, null=True)
     image = models.URLField(max_length=500, blank=True, null=True)
+    icon = FilerImageField(related_name="article", blank=True, null=True)
 
-    domain = models.ForeignKey('domains.Domain', related_name='articles')
-    authors = models.ManyToManyField('people.Person', related_name='articles')
-    places = models.ManyToManyField('places.Place', related_name='articles')
-    keywords = models.ManyToManyField(Keyword)
+    domain = models.ForeignKey('domains.Domain', related_name='articles', blank=True, null=True)
+    authors = models.ManyToManyField('people.Person', related_name='articles', blank=True)
+    places = models.ManyToManyField('places.Place', related_name='articles', blank=True)
+    keywords = models.ManyToManyField(Keyword, blank=True)
     language = models.ForeignKey(Language, blank=True, null=True)
 
     def __unicode__(self):

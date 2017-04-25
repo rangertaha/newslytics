@@ -10,7 +10,7 @@ class Person(models.Model):
     first = models.CharField(max_length=100, blank=True)
     middle = models.CharField(max_length=100, blank=True)
     last = models.CharField(max_length=100, blank=True)
-    image = FilerImageField(related_name="people")
+    image = FilerImageField(related_name="people", blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
     def __unicode__(self):

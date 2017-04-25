@@ -5,6 +5,7 @@ import newspaper
 from django.db import models
 from langdetect import detect
 from django.utils.text import slugify
+from filer.fields.image import FilerImageField
 
 from ..articles.models import Article, Language
 
@@ -24,6 +25,7 @@ class Domain(models.Model):
     favicon = models.URLField(max_length=250, blank=True, null=True)
     title = models.CharField(max_length=250, blank=True)
     description = models.TextField(blank=True, null=True)
+    image = FilerImageField(related_name="domain", blank=True, null=True)
     enabled = models.BooleanField(default=True)
     rank = models.IntegerField(default=0)
 

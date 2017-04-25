@@ -12,6 +12,8 @@ class ArticleAdmin(admin.ModelAdmin):
     list_display = ('published', 'title')
     list_display_links = ('published', 'title')
     prepopulated_fields = {'slug': ('title',), }
+    list_select_related = ('language', 'icon')
+    raw_id_fields = ('authors', 'places', 'keywords')
 
 
 @admin.register(Keyword)
