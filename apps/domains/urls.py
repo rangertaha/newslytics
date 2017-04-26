@@ -5,10 +5,10 @@ from . import views
 app_name = 'domains'
 
 urlpatterns = [
-    url(r'^domains$',
+    url(r'^$',
         views.ListView.as_view(), name='list'),
 
-    url(r'^domains/(?P<slug>[\w]+)/$',
+    url(r'^(?P<slug>[\w]+)/$',
         views.DetailView.as_view(), name='detail'),
 
 ]

@@ -10,7 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         for domain in Domain.objects.filter(enabled=True):
             try:
-                paper = newspaper.build(domain.url, memoize_articles=False)
+                paper = newspaper.build(domain.url, memoize_articles=True)
                 for feed_url in paper.feed_urls():
                     feed, created = Feed.objects.get_or_create(
                         url=feed_url, domain=domain)
