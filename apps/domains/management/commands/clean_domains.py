@@ -26,5 +26,5 @@ class Command(BaseCommand):
 
                             self.stdout.write(
                                 self.style.SUCCESS('%s' % request.url))
-                        except:
-                            pass
+                        except Exception as e:
+                            print e

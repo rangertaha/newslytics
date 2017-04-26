@@ -682,4 +682,49 @@ http://www.braidwoodtimes.com.au/
 http://www.brainerddispatch.com/
 https://patch.com/massachusetts/braintree/
 http://www.yorkshireeveningpost.co.uk/
-http://brandch
+http://brandch<urlopen error [Errno 111] Connection refused>
+http://7thspace.com
+http://www.lasvegasnow.com/
+http://www.920kvec.com/
+https://www.964eagle.co.uk/
+https://972mag.com/
+HTTP Error 403: Forbidden
+http://www.9and10news.com/
+HTTP Error 403: Forbidden
+http://www.9news.com/
+[Errno 104] Connection reset by peer
+<urlopen error [Errno -5] No address associated with hostname>
+HTTP Error 403: Forbidden
+http://abc.az
+http://www.abc.net.au/
+http://www.abc15.com/
+http://abc27.com
+http://www.abc2news.com/
+http://www.good4utah.com/
+http://ww.abc6.com/
+http://abc6onyourside.com
+http://www.abc-7.com/
+http://www.abcactionnews.com/
+http://abclive.in
+HTTP Error 404: Not Found - Forced
+http://www.abcmoney.co.uk/
+http://www.abcfoxmontana.com/
+http://abcnews.go.com
+http://abcnews4.com
+http://abcnewspapers.com
+https://patch.com/maryland/aberdeen/
+https://patch.com/pennsylvania/abington/
+http://www.abna24.com/intro/
+HTTP Error 403: Forbidden
+<urlopen error [Errno -3] Temporary failure in name resolution>
+https://www.abqjournal.com/
+http://news.abs-cbn.com/
+<urlopen error [Errno 111] Connection refused>
+http://ac360.blogs.cnn.com
+http://www.accessatlanta.com/
+http://www.accesshollywood.com/
+http://accesswdun.com/
+https://www.accidentinjurylawyerblog.com/
+http://www.aceds.org/
+http://www.aceshowbiz.com/
+https://en.swissquote.com/fx/
