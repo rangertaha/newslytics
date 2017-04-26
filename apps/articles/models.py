@@ -4,14 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils.text import slugify
 from filer.fields.image import FilerImageField
-
-
-class Keyword(models.Model):
-    word = models.CharField(max_length=30, blank=False)
-    freq = models.IntegerField(blank=True)
-
-    def __unicode__(self):
-        return self.word
+from django.contrib.postgres.fields import JSONField
 
 
 class Language(models.Model):
@@ -31,13 +24,14 @@ class Article(models.Model):
     html = models.TextField(blank=True, null=True)
     published = models.DateTimeField(blank=True, null=True)
     image = models.URLField(max_length=500, blank=True, null=True)
-    icon = FilerImageField(related_name="article", blank=True, null=True)
+    thumb = FilerImageField(related_name="article", blank=True, null=True)
 
-    domain = models.ForeignKey('domains.Domain', related_name='articles', blank=True, null=True)
-    authors = models.ManyToManyField('people.Person', related_name='articles', blank=True)
-    places = models.ManyToManyField('places.Place', related_name='articles', blank=True)
-    keywords = models.ManyToManyField(Keyword, blank=True)
+    domain = models.ForeignKey('domains.Domain', blank=True, null=True)
+    authors = models.ManyToManyField('people.Person', blank=True,
+                                     related_name='authors')
     language = models.ForeignKey(Language, blank=True, null=True)
+    people = models.ManyToManyField('people.Person', blank=True)
+    sentiment = JSONField(blank=True, null=True)
 
     def __unicode__(self):
         return self.title

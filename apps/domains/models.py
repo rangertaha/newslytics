@@ -6,6 +6,7 @@ from django.db import models
 from langdetect import detect
 from django.utils.text import slugify
 from filer.fields.image import FilerImageField
+from django.contrib.postgres.fields import JSONField
 
 from ..articles.models import Article, Language
 
@@ -25,10 +26,10 @@ class Domain(models.Model):
     favicon = models.URLField(max_length=250, blank=True, null=True)
     title = models.CharField(max_length=250, blank=True)
     description = models.TextField(blank=True, null=True)
-    image = FilerImageField(related_name="domain", blank=True, null=True)
+    image = FilerImageField(blank=True, null=True)
     enabled = models.BooleanField(default=True)
-
     rank = models.IntegerField(default=0)
+    sentiment = JSONField(blank=True, null=True)
 
     def __unicode__(self):
         return '{0}.{1}.{2}'.format(self.sub, self.domain, self.suffix)
@@ -41,7 +42,8 @@ class Domain(models.Model):
 class Crawl(models.Model):
     domain = models.ForeignKey(Domain, blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    success = models.BooleanField(default=False)
+    success = models.IntegerField(default=0)
+    failed = models.IntegerField(default=0)
     msg = models.TextField(blank=True)
 
     def __unicode__(self):

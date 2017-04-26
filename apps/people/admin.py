@@ -14,4 +14,4 @@ class PersonAdmin(admin.ModelAdmin):
 
 @admin.register(SocialAccount)
 class SocialAdmin(admin.ModelAdmin):
-    list_display = ('name', 'url')
+    list_display = ('type', 'url')

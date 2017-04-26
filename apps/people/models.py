@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib.postgres.fields import JSONField
 from filer.fields.image import FilerImageField
 from fontawesome.fields import IconField
 from django.db import models
@@ -12,18 +13,23 @@ class Person(models.Model):
     last = models.CharField(max_length=100, blank=True)
     image = FilerImageField(related_name="people", blank=True, null=True)
     description = models.TextField(blank=True, null=True)
+    sentiment = JSONField(blank=True, null=True)
 
     def __unicode__(self):
         return '%s %s %s' % (self.first, self.middle, self.last)
 
 
 class SocialAccount(models.Model):
-    icon = IconField()
-    name = models.CharField(max_length=100, blank=True, null=True)
-    url = models.URLField(max_length=250, blank=True)
-
+    ACCOUNT_CHOICES = (
+        ('save', 'Save'),
+        ('update', 'Update'),
+    )
     person = models.ForeignKey(
         Person, related_name='accounts', blank=True, null=True)
+    icon = IconField()
+    type = models.CharField(
+        max_length=5, choices=ACCOUNT_CHOICES, blank=True, null=True)
+    url = models.URLField(max_length=250, blank=True)
 
     class Meta:
         verbose_name_plural = "Social Accounts"

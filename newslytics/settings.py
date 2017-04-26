@@ -43,14 +43,13 @@ INSTALLED_APPS = [
     'apps.articles',
     'apps.people',
     'apps.places',
+    'apps.things',
     'apps.satori',
+    'apps.analysis',
 
     'filer',
     'easy_thumbnails',
     'fontawesome',
-
-
-    #'places',
 ]
 
 MIDDLEWARE = [
@@ -93,6 +92,17 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'newslytics',
+        'USER': 'newslytics',
+        'PASSWORD': 'newslytics',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -179,7 +189,7 @@ SUIT_CONFIG = {
     # ),
 
     # misc
-    'LIST_PER_PAGE': 100
+    'LIST_PER_PAGE': 50
 }
 
 PLACES_MAPS_API_KEY='YourAwesomeUltraSecretKey'
