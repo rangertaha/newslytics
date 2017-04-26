@@ -1,14 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import newspaper
 from django.db import models
-from langdetect import detect
-from django.utils.text import slugify
 from filer.fields.image import FilerImageField
 from django.contrib.postgres.fields import JSONField
-
-from ..articles.models import Article, Language
 
 
 class Domain(models.Model):
@@ -33,27 +28,3 @@ class Domain(models.Model):
 
     def __unicode__(self):
         return '{0}.{1}.{2}'.format(self.sub, self.domain, self.suffix)
-
-    # @models.permalink
-    # def get_absolute_url(self):
-    #     return 'domains:detail', (self.pk, )
-
-
-class Crawl(models.Model):
-    domain = models.ForeignKey(Domain, blank=True)
-    created = models.DateTimeField(auto_now_add=True)
-    success = models.IntegerField(default=0)
-    failed = models.IntegerField(default=0)
-    msg = models.TextField(blank=True)
-
-    def __unicode__(self):
-        return '%s' % (self.id, )
-
-
-class Feed(models.Model):
-    domain = models.ForeignKey(
-        Domain, related_name='feeds', blank=True, null=True)
-    url = models.URLField(max_length=250, blank=False, null=True)
-
-    def __unicode__(self):
-        return self.url

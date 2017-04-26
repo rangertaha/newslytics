@@ -32,13 +32,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'apps.domains',
-    'apps.articles',
+
+    'apps.news',
     'apps.people',
     'apps.places',
-    'apps.things',
-    'apps.satori',
+    'apps.streams',
+    'apps.objects',
+    'apps.domains',
     'apps.analysis',
+    'apps.crawling',
 
     'filer',
     'easy_thumbnails',

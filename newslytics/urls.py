@@ -20,10 +20,9 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^domains/', include('apps.domains.urls')),
-    url(r'^articles/', include('apps.articles.urls'), name='articles'),
-    url(r'^people/', include('apps.people.urls'), name='people'),
-    url(r'^things/', include('apps.things.urls'), name='things'),
+    url(r'^domains/', include('apps.domains.urls'), name='domains'),
+    url(r'^news/', include('apps.news.urls'), name='news'),
+    url(r'^objects/', include('apps.objects.urls'), name='objects'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + \
               static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -21,8 +21,22 @@ class Person(models.Model):
 
 class SocialAccount(models.Model):
     ACCOUNT_CHOICES = (
-        ('save', 'Save'),
-        ('update', 'Update'),
+        ('facebook', 'Facebook'),
+        ('twitter', 'Twitter'),
+        ('linkedlin', 'LinkedIn'),
+        ('google+', 'Google+'),
+        ('youtube', 'YouTube'),
+        ('instagram', 'Instagram'),
+        ('pinterest', 'Pinterest'),
+        ('tumblr', 'Tumblr'),
+        ('snapchat', 'Snapchat'),
+        ('reddit', 'Reddit'),
+        ('flickr', 'Flickr'),
+        ('foursquare', 'Foursquare'),
+        ('kik', 'Kik'),
+        ('yikyak', 'Yik Yah'),
+        ('shots', 'Shots'),
+        ('periscope', 'Periscope'),
     )
     person = models.ForeignKey(
         Person, related_name='accounts', blank=True, null=True)
@@ -32,4 +46,4 @@ class SocialAccount(models.Model):
     url = models.URLField(max_length=250, blank=True)
 
     class Meta:
-        verbose_name_plural = "Social Accounts"
+        verbose_name_plural = "Accounts"

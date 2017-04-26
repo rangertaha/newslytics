@@ -2,9 +2,6 @@ import os.path
 import time
 from django.core.management.base import BaseCommand, CommandError
 from django.utils.text import slugify
-from time import mktime
-from datetime import datetime
-
 
 import hashlib
 from datetime import datetime
@@ -16,41 +13,51 @@ import geograpy
 from geograpy import extraction, places
 import newspaper
 from langdetect import detect
-import feedparser
 
-from apps.domains.models import Domain, Crawl, Feed
-from apps.articles.models import Article, Language
-from apps.places.models import Place
+from apps.domains.models import Domain
+from apps.news.models import Article, Language
+from apps.crawling.models import Crawl
 from apps.people.models import Person
 
 
 class Command(BaseCommand):
-    help = 'Get feed items'
+    help = 'Crawl domains for articles'
+
+    # def add_arguments(self, parser):
+    #     parser.add_argument('rank', nargs='+', type=int)
 
     def handle(self, *args, **options):
-        feeds = Feed.objects.all()
-        for feed in feeds:
-            d = feedparser.parse(feed.url)
-            for i in d.entries:
-                self.crawl(url=i.link, datetime=i.published_parsed)
+        domains = Domain.objects.filter(enabled=True)
+        for domain in domains:
+            self.crawl(domain=domain)
+            domain.enabled = False
+            domain.save()
 
-    def crawl(self, url=None, datetime=None, memoize=False):
+
+    def crawl(self, domain=None, memoize=False):
+        crawling = Crawl.objects.create(domain=domain, dtype='articles')
+        crawling.count = 0
         try:
-            article = newspaper.Article(url=url)
-            article.build()
-            self.save(datetime, article)
-        except Exception as e:
-            pass
-            # print e
+            paper = newspaper.build(domain.url, memoize_articles=memoize)
+            for article in paper.articles:
+                article.download()
+                soup = BeautifulSoup(article.html)
+                article.html = soup.prettify()
 
-    def save(self, dtime, article):
+                article.parse()
+                article.nlp()
+                if article.summary and article.title:
+                    self.save(domain, article)
+                    crawling.count = crawling.count + 1
+
+        except Exception as e:
+            crawling.error = e
+        crawling.save()
+
+    def save(self, domain, article):
         language, created = Language.objects.get_or_create(
             code=self._language(article)
         )
-        sub, dm, suffix = self._domain(article)
-        domain, created = Domain.objects.get_or_create(
-            sub=sub, domain=dm, suffix=suffix)
-        print article.url
         atcl, created = Article.objects.get_or_create(
             url=article.url,
             domain=domain,
@@ -59,7 +66,7 @@ class Command(BaseCommand):
         atcl.description = article.summary
         atcl.text = article.text
         atcl.html = article.html
-        atcl.published = self._published(article, dtime)
+        atcl.published = self._published(article)
         atcl.language = language
 
         for person in self._authors(article):
@@ -71,13 +78,11 @@ class Command(BaseCommand):
         # for location in self._locations(article):
         #     article.places.add(location)
 
-        # print atcl.title
+        print atcl.title
         atcl.save()
 
-    def _published(self, article, dtime):
-        if dtime:
-            return datetime.fromtimestamp(mktime(dtime))
-        if article.publish_date:
+    def _published(self, article):
+        if article:
             return article.publish_date
         return
 
@@ -102,7 +107,3 @@ class Command(BaseCommand):
         #     place = Place.objects.get_or_create(...)
         #     yield place
         pass
-
-    def _domain(self, article):
-        d = tldextract.extract(article.url)
-        return d.subdomain, d.domain, d.suffix
