@@ -13,7 +13,7 @@ class ArticleAdmin(admin.ModelAdmin):
     list_display_links = ('published', 'title')
     prepopulated_fields = {'slug': ('title',), }
     list_select_related = ('language', 'thumb')
-    raw_id_fields = ('authors', )
+    raw_id_fields = ('authors', 'things', 'people')
     search_fields = ('title', 'description', 'url', 'text', 'html')
 
 

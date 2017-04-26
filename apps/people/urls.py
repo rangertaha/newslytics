@@ -2,13 +2,13 @@ from django.conf.urls import url
 
 from . import views
 
-app_name = 'analysis'
+app_name = 'people'
 
 urlpatterns = [
-    url(r'^analysis',
+    url(r'^$',
         views.ListView.as_view(), name='list'),
 
-    url(r'^analysis/(?P<slug>[\w]+)/$',
+    url(r'/(?P<slug>[\w]+)/$',
         views.DetailView.as_view(), name='detail'),
 
 ]

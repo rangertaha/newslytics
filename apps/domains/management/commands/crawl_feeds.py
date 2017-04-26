@@ -15,4 +15,4 @@ class Command(BaseCommand):
                     feed, created = Feed.objects.get_or_create(
                         url=feed_url, domain=domain)
             except Exception as e:
-                print e
+                pass

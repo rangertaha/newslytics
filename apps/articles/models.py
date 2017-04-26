@@ -31,6 +31,7 @@ class Article(models.Model):
                                      related_name='authors')
     language = models.ForeignKey(Language, blank=True, null=True)
     people = models.ManyToManyField('people.Person', blank=True)
+    things = models.ManyToManyField('things.Thing', blank=True)
     sentiment = JSONField(blank=True, null=True)
 
     def __unicode__(self):

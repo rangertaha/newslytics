@@ -40,17 +40,8 @@ class Command(BaseCommand):
     def _articles(self):
         for article in Article.objects.all():
             vs = self.analyzer.polarity_scores(article.text)
-            print type(vs)
-            # sentiment, created = Sentiment.objects.get_or_create(
-            #     pos=vs.get('pos'),
-            #     neu=vs.get('neu'),
-            #     neg=vs.get('neg'),
-            #     compound=vs.get('compound'),
-            # )
-            # article.sentiment = sentiment
-            # article.save()
-            #
-            # print sentiment
+            article.sentiment = vs
+            article.save()
             print vs
 
     def _people(self):
