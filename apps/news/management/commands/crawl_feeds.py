@@ -25,5 +25,5 @@ class Command(BaseCommand):
             except Exception as e:
                 crawling.error = e
             crawling.save()
-            domain.enabled = False
+            domain.valid = False
             domain.save()

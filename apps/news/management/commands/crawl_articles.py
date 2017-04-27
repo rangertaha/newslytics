@@ -30,7 +30,7 @@ class Command(BaseCommand):
         domains = Domain.objects.filter(valid=True)
         for domain in domains:
             self.crawl(domain=domain)
-            domain.enabled = False
+            domain.valid = False
             domain.save()
 
     def crawl(self, domain=None, memoize=False):
