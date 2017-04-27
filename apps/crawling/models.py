@@ -22,3 +22,11 @@ class Crawl(models.Model):
 
     def __unicode__(self):
         return '%s' % (self.domain, )
+
+
+class Group(models.Model):
+    title = models.CharField(max_length=60, blank=True, null=True)
+    domains = models.ManyToManyField(Domain, blank=True)
+
+    def __unicode__(self):
+        return '%s' % (self.title, )
