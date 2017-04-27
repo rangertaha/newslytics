@@ -27,7 +27,7 @@ class Command(BaseCommand):
     #     parser.add_argument('rank', nargs='+', type=int)
 
     def handle(self, *args, **options):
-        domains = Domain.objects.filter(enabled=True)
+        domains = Domain.objects.filter(valid=True)
         for domain in domains:
             self.crawl(domain=domain)
 

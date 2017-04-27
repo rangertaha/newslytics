@@ -1,7 +1,10 @@
+import time
 import os.path
 import urllib2
 
+import tldextract
 from django.core.management.base import BaseCommand, CommandError
+from apps.domains.models import Domain
 
 
 class Command(BaseCommand):
@@ -24,7 +27,21 @@ class Command(BaseCommand):
                                 urllib2.HTTPRedirectHandler)
                             request = opener.open(url)
 
+                            proto = 'http'
+                            if 'https' == request.url[:5]:
+                                proto = 'https'
+
+                            d = tldextract.extract(request.url)
+                            dobj, created = Domain.objects.get_or_create(
+                                proto=proto,
+                                sub=d.subdomain,
+                                domain=d.domain,
+                                suffix=d.suffix,
+                                url=request.url,
+                                valid=True)
+
                             self.stdout.write(
-                                self.style.SUCCESS('%s' % request.url))
+                                self.style.SUCCESS('%s' % dobj.url))
+                            time.sleep(0.5)
                         except Exception as e:
                             print e

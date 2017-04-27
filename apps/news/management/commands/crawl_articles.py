@@ -27,15 +27,14 @@ class Command(BaseCommand):
     #     parser.add_argument('rank', nargs='+', type=int)
 
     def handle(self, *args, **options):
-        domains = Domain.objects.filter(enabled=True)
+        domains = Domain.objects.filter(valid=True)
         for domain in domains:
             self.crawl(domain=domain)
-            domain.enabled = False
+            domain.valid = False
             domain.save()
 
-
     def crawl(self, domain=None, memoize=False):
-        crawling = Crawl.objects.create(domain=domain, dtype='articles')
+        crawling = Crawl.objects.create(domain=domain, otype='articles')
         crawling.count = 0
         try:
             paper = newspaper.build(domain.url, memoize_articles=memoize)

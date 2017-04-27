@@ -33,6 +33,7 @@ class Article(models.Model):
     people = models.ManyToManyField('people.Person', blank=True)
     things = models.ManyToManyField('objects.Thing', blank=True)
     sentiment = JSONField(blank=True, null=True)
+    valid = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.title
@@ -50,6 +51,7 @@ class Feed(models.Model):
     domain = models.ForeignKey(
         'domains.Domain', related_name='feeds', blank=True, null=True)
     url = models.URLField(max_length=250, blank=False, null=True)
+    valid = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.url

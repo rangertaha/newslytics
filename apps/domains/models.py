@@ -22,9 +22,9 @@ class Domain(models.Model):
     title = models.CharField(max_length=250, blank=True)
     description = models.TextField(blank=True, null=True)
     image = FilerImageField(blank=True, null=True)
-    enabled = models.BooleanField(default=True)
     rank = models.IntegerField(default=0)
     sentiment = JSONField(blank=True, null=True)
+    valid = models.BooleanField(default=False)
 
     def __unicode__(self):
         return '{0}.{1}.{2}'.format(self.sub, self.domain, self.suffix)
