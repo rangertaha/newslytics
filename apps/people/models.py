@@ -14,6 +14,7 @@ class Person(models.Model):
     image = FilerImageField(related_name="people", blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     sentiment = JSONField(blank=True, null=True)
+    valid = models.BooleanField(default=False)
 
     def __unicode__(self):
         return '%s %s %s' % (self.first, self.middle, self.last)
