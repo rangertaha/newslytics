@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for domain in Domain.objects.filter(valid=True):
-            crawling = Crawl.objects.create(domain=domain, dtype='feed:urls')
+            crawling = Crawl.objects.create(domain=domain, otype='feed:urls')
             crawling.count = 0
             try:
                 paper = newspaper.build(domain.url, memoize_articles=True)
@@ -20,6 +20,7 @@ class Command(BaseCommand):
                         url=feed_url, domain=domain)
                     if feed:
                         crawling.count = crawling.count + 1
+                print domain.url
 
             except Exception as e:
                 crawling.error = e

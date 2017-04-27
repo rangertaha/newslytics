@@ -34,7 +34,7 @@ class Command(BaseCommand):
             domain.save()
 
     def crawl(self, domain=None, memoize=False):
-        crawling = Crawl.objects.create(domain=domain, dtype='articles')
+        crawling = Crawl.objects.create(domain=domain, otype='articles')
         crawling.count = 0
         try:
             paper = newspaper.build(domain.url, memoize_articles=memoize)
