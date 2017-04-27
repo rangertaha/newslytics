@@ -6,9 +6,11 @@ from django.contrib import admin
 # Register your models here.
 from .models import Person, SocialAccount
 
+
 class SocialAccountInline(admin.TabularInline):
     model = SocialAccount
     fk_name = "person"
+
 
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
