@@ -1,8 +1,3 @@
-import time
-import os.path
-import urllib2
-
-import tldextract
 from django.core.management.base import BaseCommand, CommandError
 from apps.domains.models import Domain
 
