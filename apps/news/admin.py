@@ -9,7 +9,7 @@ from .models import Article, Language, Feed
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('published', 'title')
+    list_display = ('published', 'title', 'valid')
     list_display_links = ('published', 'title')
     prepopulated_fields = {'slug': ('title',), }
     list_select_related = ('language', 'thumb')
@@ -24,4 +24,4 @@ class ArticleAdmin(admin.ModelAdmin):
 
 @admin.register(Feed)
 class FeedAdmin(admin.ModelAdmin):
-    list_display = ('url', 'domain')
+    list_display = ('url', 'domain', 'valid')

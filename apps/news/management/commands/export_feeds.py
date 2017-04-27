@@ -7,5 +7,5 @@ class Command(BaseCommand):
     help = 'Output RSS feed urls'
 
     def handle(self, *args, **options):
-        for feed in Feed.objects.all():
+        for feed in Feed.objects.filter(valid=True):
             self.stdout.write(self.style.SUCCESS('%s' % feed.url))
