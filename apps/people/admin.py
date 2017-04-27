@@ -16,4 +16,3 @@ class PersonAdmin(admin.ModelAdmin):
     inlines = [
         SocialAccountInline,
     ]
-
