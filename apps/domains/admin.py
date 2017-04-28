@@ -11,4 +11,5 @@ from .models import Domain
 class DomainAdmin(admin.ModelAdmin):
     list_display = ('rank', 'url', 'title', 'valid')
     list_display_links = ('url', 'title')
+    raw_id_fields = ('writers', )
     search_fields = ('proto', 'sub', 'domain', 'suffix', 'title', 'description')

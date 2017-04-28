@@ -35,7 +35,7 @@ class Command(BaseCommand):
             domain.save()
 
     def crawl(self, domain=None, memoize=True):
-        crawling = Crawl.objects.create(domain=domain, otype='articles')
+        crawling = Crawl.objects.create(domain=domain, otype='article')
         crawling.count = 0
         try:
             paper = newspaper.build(domain.url, memoize_articles=memoize)
@@ -70,7 +70,7 @@ class Command(BaseCommand):
         atcl.language = language
         atcl.sentiment = self._sentiment(article)
 
-        for person in self._authors(article):
+        for person in self._authors(domain, article):
             atcl.authors.add(person)
 
         # for keyword in self._keywords(article):
@@ -93,9 +93,10 @@ class Command(BaseCommand):
             return detect(text)
         return article.meta_lang
 
-    def _authors(self, article):
+    def _authors(self, domain, article):
         for author in article.authors:
             person, created = Person.objects.get_or_create(first=author)
+            domain.writers.add(person)
             yield person
 
     # def _keywords(self, article):

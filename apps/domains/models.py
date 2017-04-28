@@ -26,5 +26,7 @@ class Domain(models.Model):
     sentiment = JSONField(blank=True, null=True)
     valid = models.BooleanField(default=False)
 
+    writers = models.ManyToManyField('people.Person', blank=True)
+
     def __unicode__(self):
         return '{0}.{1}.{2}'.format(self.sub, self.domain, self.suffix)
