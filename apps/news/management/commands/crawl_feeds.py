@@ -21,9 +21,9 @@ class Command(BaseCommand):
                     if feed:
                         crawling.count = crawling.count + 1
                 print domain.url
+                domain.valid = False
+                domain.save()
 
             except Exception as e:
                 crawling.error = e
             crawling.save()
-            domain.valid = False
-            domain.save()
