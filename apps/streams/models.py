@@ -18,4 +18,3 @@ class Channel(models.Model):
 
     def sub(self):
        pass
-

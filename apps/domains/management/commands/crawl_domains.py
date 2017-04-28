@@ -53,6 +53,12 @@ class Command(BaseCommand):
             print e
         crawling.save()
 
+    def articles(self):
+        pass
+
+    def feeds(self):
+        pass
+
     def save(self, domain, article):
         language, created = Language.objects.get_or_create(
             code=self._language(article)

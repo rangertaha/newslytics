@@ -1,6 +1,7 @@
 import os.path
 import time
 from django.core.management.base import BaseCommand, CommandError
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from django.utils.text import slugify
 
 import hashlib
@@ -27,13 +28,13 @@ class Command(BaseCommand):
     #     parser.add_argument('rank', nargs='+', type=int)
 
     def handle(self, *args, **options):
-        domains = Domain.objects.filter(valid=True)
+        domains = Domain.objects.filter(valid=False)
         for domain in domains:
             self.crawl(domain=domain)
-            domain.valid = False
+            domain.valid = True
             domain.save()
 
-    def crawl(self, domain=None, memoize=False):
+    def crawl(self, domain=None, memoize=True):
         crawling = Crawl.objects.create(domain=domain, otype='articles')
         crawling.count = 0
         try:
@@ -67,6 +68,7 @@ class Command(BaseCommand):
         atcl.html = article.html
         atcl.published = self._published(article)
         atcl.language = language
+        atcl.sentiment = self._sentiment(article)
 
         for person in self._authors(article):
             atcl.authors.add(person)
@@ -106,3 +108,11 @@ class Command(BaseCommand):
         #     place = Place.objects.get_or_create(...)
         #     yield place
         pass
+
+    def _sentiment(self, article):
+        analyzer = SentimentIntensityAnalyzer()
+        return analyzer.polarity_scores(article.text)
+
+
+
+
