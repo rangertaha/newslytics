@@ -10,7 +10,7 @@ class Command(BaseCommand):
     help = 'Get RSS feeds from news sites'
 
     def handle(self, *args, **options):
-        for domain in Domain.objects.filter(valid=True):
+        for domain in Domain.objects.filter(valid=False):
             crawling = Crawl.objects.create(domain=domain, otype='feed:urls')
             crawling.count = 0
             try:
@@ -21,7 +21,7 @@ class Command(BaseCommand):
                     if feed:
                         crawling.count = crawling.count + 1
                 print domain.url
-                domain.valid = False
+                domain.valid = True
                 domain.save()
 
             except Exception as e:
