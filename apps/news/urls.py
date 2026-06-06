@@ -1,14 +1,10 @@
-from django.conf.urls import url
+from django.urls import path
 
 from . import views
 
 app_name = 'news'
 
 urlpatterns = [
-    url(r'^$',
-        views.ListView.as_view(), name='list'),
-
-    url(r'^(?P<slug>[\w]+)/$',
-        views.DetailView.as_view(), name='detail'),
-
+    path('', views.ListView.as_view(), name='list'),
+    path('<slug:slug>/', views.DetailView.as_view(), name='detail'),
 ]

@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from apps.domains.models import Domain
 
@@ -10,9 +10,7 @@ class Command(BaseCommand):
         for feed in Domain.objects.all():
             if feed.sub:
                 self.stdout.write(
-                    self.style.SUCCESS('%s://%s.%s.%s' % (
-                        feed.proto, feed.sub, feed.domain, feed.suffix)))
+                    self.style.SUCCESS(f'{feed.proto}://{feed.sub}.{feed.domain}.{feed.suffix}'))
             else:
                 self.stdout.write(
-                    self.style.SUCCESS('%s://%s.%s' % (
-                        feed.proto, feed.domain, feed.suffix)))
+                    self.style.SUCCESS(f'{feed.proto}://{feed.domain}.{feed.suffix}'))

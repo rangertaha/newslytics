@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from apps.news.models import Feed
 
@@ -8,4 +8,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for feed in Feed.objects.filter(valid=True):
-            self.stdout.write(self.style.SUCCESS('%s' % feed.url))
+            self.stdout.write(self.style.SUCCESS(f'{feed.url}'))

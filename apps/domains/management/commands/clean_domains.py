@@ -1,9 +1,10 @@
-import time
 import os.path
-import urllib2
+import time
+import urllib.request
 
 import tldextract
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
+
 from apps.domains.models import Domain
 
 
@@ -17,31 +18,31 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         for lpath in options.get('file'):
             if os.path.isfile(lpath):
-                with open(lpath, 'r') as f:
+                with open(lpath) as f:
                     lines = f.readlines()
-                    for l in lines:
-                        url = 'http://' + l
+                    for line in lines:
+                        url = 'http://' + line
 
                         try:
-                            opener = urllib2.build_opener(
-                                urllib2.HTTPRedirectHandler)
-                            request = opener.open(url)
+                            opener = urllib.request.build_opener(
+                                urllib.request.HTTPRedirectHandler)
+                            response = opener.open(url)
 
                             proto = 'http'
-                            if 'https' == request.url[:5]:
+                            if response.url.startswith('https'):
                                 proto = 'https'
 
-                            d = tldextract.extract(request.url)
+                            d = tldextract.extract(response.url)
                             dobj, created = Domain.objects.get_or_create(
                                 proto=proto,
                                 sub=d.subdomain,
                                 domain=d.domain,
                                 suffix=d.suffix,
-                                url=request.url,
+                                url=response.url,
                                 valid=True)
 
                             self.stdout.write(
-                                self.style.SUCCESS('%s' % dobj.url))
+                                self.style.SUCCESS(f'{dobj.url}'))
                             time.sleep(0.5)
                         except Exception as e:
-                            print e
+                            self.stderr.write(str(e))

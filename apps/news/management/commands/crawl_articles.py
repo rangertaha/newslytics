@@ -1,31 +1,17 @@
-import os.path
-import time
-from django.core.management.base import BaseCommand, CommandError
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from django.utils.text import slugify
-
-import hashlib
-from datetime import datetime
-
-import json
-import tldextract
-from bs4 import BeautifulSoup
-import geograpy
-from geograpy import extraction, places
 import newspaper
+from bs4 import BeautifulSoup
+from django.core.management.base import BaseCommand
 from langdetect import detect
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
+from apps.crawling.models import Crawl
 from apps.domains.models import Domain
 from apps.news.models import Article, Language
-from apps.crawling.models import Crawl
 from apps.people.models import Person
 
 
 class Command(BaseCommand):
     help = 'Crawl domains for articles'
-
-    # def add_arguments(self, parser):
-    #     parser.add_argument('rank', nargs='+', type=int)
 
     def handle(self, *args, **options):
         domains = Domain.objects.filter(valid=False)
@@ -41,7 +27,7 @@ class Command(BaseCommand):
             paper = newspaper.build(domain.url, memoize_articles=memoize)
             for article in paper.articles:
                 article.download()
-                soup = BeautifulSoup(article.html)
+                soup = BeautifulSoup(article.html, 'html.parser')
                 article.html = soup.prettify()
 
                 article.parse()
@@ -51,7 +37,7 @@ class Command(BaseCommand):
                     crawling.count = crawling.count + 1
 
         except Exception as e:
-            crawling.error = e
+            crawling.error = str(e)
         crawling.save()
 
     def save(self, domain, article):
@@ -73,19 +59,13 @@ class Command(BaseCommand):
         for person in self._authors(domain, article):
             atcl.authors.add(person)
 
-        # for keyword in self._keywords(article):
-        #     atcl.keywords.add(keyword)
-
-        # for location in self._locations(article):
-        #     article.places.add(location)
-
-        print atcl.title
+        self.stdout.write(atcl.title)
         atcl.save()
 
     def _published(self, article):
         if article:
             return article.publish_date
-        return
+        return None
 
     def _language(self, article):
         if not article.meta_lang:
@@ -99,21 +79,6 @@ class Command(BaseCommand):
             domain.writers.add(person)
             yield person
 
-    # def _keywords(self, article):
-    #     for keyword in article.keywords:
-    #         word, created = Keyword.objects.get_or_create(word=keyword)
-    #         yield word
-
-    def _locations(self, article):
-        # for location in ?:
-        #     place = Place.objects.get_or_create(...)
-        #     yield place
-        pass
-
     def _sentiment(self, article):
         analyzer = SentimentIntensityAnalyzer()
         return analyzer.polarity_scores(article.text)
-
-
-
-

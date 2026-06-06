@@ -1,7 +1,8 @@
 import os.path
-from django.core.management.base import BaseCommand, CommandError
-import urllib2
+
 import tldextract
+from django.core.management.base import BaseCommand
+
 from apps.domains.models import Domain
 
 
@@ -15,7 +16,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         for lpath in options.get('file'):
             if os.path.isfile(lpath):
-                with open(lpath, 'r') as f:
+                with open(lpath) as f:
                     lines = f.readlines()
                     for url in lines:
                         proto = 'http'
@@ -32,4 +33,4 @@ class Command(BaseCommand):
                                 url=url)
                         except Exception as e:
                             self.stdout.write(
-                                self.style.ERROR('Error: %s' % e))
+                                self.style.ERROR(f'Error: {e}'))

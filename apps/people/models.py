@@ -1,11 +1,6 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.contrib.postgres.fields import ArrayField
-from django.contrib.postgres.fields import JSONField
-from filer.fields.image import FilerImageField
-from fontawesome.fields import IconField
 from django.db import models
+from filer.fields.image import FilerImageField
 
 
 class Person(models.Model):
@@ -15,17 +10,17 @@ class Person(models.Model):
     suffix = models.CharField(max_length=100, blank=True)
     aliases = ArrayField(
         models.CharField(max_length=50), blank=True, null=True)
-    image = FilerImageField(related_name="people", blank=True, null=True)
+    image = FilerImageField(
+        related_name="people", on_delete=models.SET_NULL, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    sentiment = JSONField(blank=True, null=True)
+    sentiment = models.JSONField(blank=True, null=True)
     valid = models.BooleanField(default=False)
 
-    def __unicode__(self):
-        return '%s %s %s' % (self.first, self.middle, self.last)
+    def __str__(self):
+        return f'{self.first} {self.middle} {self.last}'
 
     def name(self):
-        return '{0} {1} {2}'.format(
-            self.first, self.middle, self.last).strip()
+        return f'{self.first} {self.middle} {self.last}'.strip()
 
 
 class SocialAccount(models.Model):
@@ -48,10 +43,11 @@ class SocialAccount(models.Model):
         ('periscope', 'Periscope'),
     )
     person = models.ForeignKey(
-        Person, related_name='accounts', blank=True, null=True)
-    icon = IconField()
+        Person, related_name='accounts', on_delete=models.CASCADE,
+        blank=True, null=True)
+    icon = models.CharField(max_length=50, blank=True)
     type = models.CharField(
-        max_length=5, choices=ACCOUNT_CHOICES, blank=True, null=True)
+        max_length=20, choices=ACCOUNT_CHOICES, blank=True, null=True)
     url = models.URLField(max_length=250, blank=True)
 
     class Meta:

@@ -1,9 +1,9 @@
-from django.core.management.base import BaseCommand, CommandError
 import newspaper
+from django.core.management.base import BaseCommand
 
-from apps.news.models import Feed
-from apps.domains.models import Domain
 from apps.crawling.models import Crawl
+from apps.domains.models import Domain
+from apps.news.models import Feed
 
 
 class Command(BaseCommand):
@@ -20,10 +20,10 @@ class Command(BaseCommand):
                         url=feed_url, domain=domain)
                     if feed:
                         crawling.count = crawling.count + 1
-                print domain.url
+                self.stdout.write(domain.url)
                 domain.valid = True
                 domain.save()
 
             except Exception as e:
-                crawling.error = e
+                crawling.error = str(e)
             crawling.save()

@@ -1,20 +1,16 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-import sys
-import threading
 from django.db import models
-
-from satori.rtm.client import make_client, SubscriptionMode
 
 
 class Channel(models.Model):
-    endpoint = models.CharField(max_length=30, default='wss://open-data.api.satori.com')
+    endpoint = models.CharField(
+        max_length=60, default='wss://open-data.api.satori.com')
     name = models.CharField(max_length=30, blank=True, null=True)
     appkey = models.CharField(max_length=130, blank=True, null=True)
 
-    def __unicode__(self):
-        return self. name
+    def __str__(self):
+        return self.name or ''
 
     def sub(self):
-       pass
+        # The Satori real-time data service this used to subscribe to has been
+        # shut down. Left as a stub; wire up a replacement pub/sub here.
+        pass
