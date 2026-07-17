@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Crawls — Newslytics{% endblock %}
+
+{% block content %}
+<h1>Crawls</h1>
+<ul class="object-list">
+  {% for crawl in object_list %}
+  <li>
+    <a href="{% url 'crawling:detail' crawl.pk %}">{{ crawl.domain }}</a>
+    <span class="muted">— {{ crawl.otype }} — {{ crawl.created|date:"Y-m-d H:i" }} — {{ crawl.count }} item{{ crawl.count|pluralize }}</span>
+  </li>
+  {% empty %}
+  <li>No crawls recorded yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

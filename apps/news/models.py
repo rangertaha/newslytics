@@ -5,7 +5,8 @@ from filer.fields.image import FilerImageField
 
 
 class Language(models.Model):
-    code = models.CharField(max_length=4, blank=False)
+    # Long enough for regional codes such as "zh-cn" that langdetect returns.
+    code = models.CharField(max_length=8, blank=False)
     name = models.CharField(max_length=30, blank=True)
 
     def __str__(self):
@@ -13,7 +14,7 @@ class Language(models.Model):
 
 
 class Article(models.Model):
-    slug = models.SlugField(max_length=250)
+    slug = models.SlugField(max_length=250, unique=True, blank=True)
     url = models.URLField(max_length=250, unique=True)
     title = models.CharField(max_length=250)
     description = models.TextField(blank=True, null=True)
@@ -42,8 +43,22 @@ class Article(models.Model):
         return reverse('news:detail', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        if not self.slug:
+            self.slug = self._unique_slug()
         super().save(*args, **kwargs)
+
+    def _unique_slug(self):
+        base = slugify(self.title)[:240] or 'article'
+        taken = set(
+            Article.objects.exclude(pk=self.pk)
+            .filter(slug__startswith=base)
+            .values_list('slug', flat=True))
+        slug = base
+        suffix = 2
+        while slug in taken:
+            slug = f'{base}-{suffix}'
+            suffix += 1
+        return slug
 
 
 class Feed(models.Model):
@@ -54,4 +69,4 @@ class Feed(models.Model):
     valid = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.url
+        return self.url or ''

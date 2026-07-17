@@ -94,3 +94,6 @@ ENV/
 
 static/
 
+# Ruff
+.ruff_cache/
+

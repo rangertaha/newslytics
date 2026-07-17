@@ -5,11 +5,10 @@ import feedparser
 import newspaper
 import tldextract
 from django.core.management.base import BaseCommand
-from langdetect import detect
 
 from apps.domains.models import Domain
-from apps.news.models import Article, Feed, Language
-from apps.people.models import Person
+from apps.news.crawl import save_article
+from apps.news.models import Feed
 
 
 class Command(BaseCommand):
@@ -19,59 +18,30 @@ class Command(BaseCommand):
         feeds = Feed.objects.all()
         for feed in feeds:
             d = feedparser.parse(feed.url)
-            for i in d.entries:
-                self.crawl(url=i.link, datetime=i.published_parsed)
+            for entry in d.entries:
+                # Entries without a pubDate have no published_parsed at all.
+                self.crawl(url=entry.link,
+                           published=entry.get('published_parsed'))
 
-    def crawl(self, url=None, datetime=None, memoize=False):
+    def crawl(self, url=None, published=None):
         try:
             article = newspaper.Article(url=url)
             article.build()
-            self.save(datetime, article)
-        except Exception:
-            pass
+        except Exception as e:
+            self.stderr.write(f'{url}: {e}')
+            return
+        domain = self._domain(article)
+        atcl = save_article(domain, article,
+                            published=self._published(published))
+        self.stdout.write(atcl.url)
 
-    def save(self, dtime, article):
-        language, created = Language.objects.get_or_create(
-            code=self._language(article)
-        )
-        sub, dm, suffix = self._domain(article)
-        domain, created = Domain.objects.get_or_create(
-            sub=sub, domain=dm, suffix=suffix)
-        self.stdout.write(article.url)
-        atcl, created = Article.objects.get_or_create(
-            url=article.url,
-            domain=domain,
-            title=article.title)
-
-        atcl.description = article.summary
-        atcl.text = article.text
-        atcl.html = article.html
-        atcl.published = self._published(article, dtime)
-        atcl.language = language
-
-        for person in self._authors(article):
-            atcl.authors.add(person)
-
-        atcl.save()
-
-    def _published(self, article, dtime):
-        if dtime:
-            return datetime.fromtimestamp(mktime(dtime))
-        if article.publish_date:
-            return article.publish_date
+    def _published(self, published):
+        if published:
+            return datetime.fromtimestamp(mktime(published))
         return None
-
-    def _language(self, article):
-        if not article.meta_lang:
-            text = article.title + ' ' + article.summary
-            return detect(text)
-        return article.meta_lang
-
-    def _authors(self, article):
-        for author in article.authors:
-            person, created = Person.objects.get_or_create(first=author)
-            yield person
 
     def _domain(self, article):
         d = tldextract.extract(article.url)
-        return d.subdomain, d.domain, d.suffix
+        domain, _ = Domain.objects.get_or_create(
+            sub=d.subdomain, domain=d.domain, suffix=d.suffix)
+        return domain

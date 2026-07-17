@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Places — Newslytics{% endblock %}
+
+{% block content %}
+<h1>Places</h1>
+<ul class="object-list">
+  {% for place in object_list %}
+  <li><a href="{{ place.get_absolute_url }}">{{ place.name }}</a></li>
+  {% empty %}
+  <li>No places yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

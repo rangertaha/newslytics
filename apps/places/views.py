@@ -1,3 +1,12 @@
 
+from django.views import generic
 
-# Create your views here.
+from .models import Place
+
+
+class ListView(generic.ListView):
+    model = Place
+
+
+class DetailView(generic.DetailView):
+    model = Place

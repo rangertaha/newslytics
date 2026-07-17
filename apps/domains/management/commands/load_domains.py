@@ -17,10 +17,12 @@ class Command(BaseCommand):
         for lpath in options.get('file'):
             if os.path.isfile(lpath):
                 with open(lpath) as f:
-                    lines = f.readlines()
-                    for url in lines:
+                    for url in f:
+                        url = url.strip()
+                        if not url:
+                            continue
                         proto = 'http'
-                        if 'https' == url[:5]:
+                        if url.startswith('https'):
                             proto = 'https'
 
                         try:

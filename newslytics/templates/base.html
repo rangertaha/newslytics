@@ -1,0 +1,35 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Newslytics{% endblock %}</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; color: #222; }
+    header { background: #1a2634; padding: 0.75rem 1.5rem; }
+    header a { color: #cfd8e3; text-decoration: none; margin-right: 1rem; }
+    header a.brand { color: #fff; font-weight: 700; }
+    header a:hover { color: #fff; }
+    main { max-width: 60rem; margin: 1.5rem auto; padding: 0 1.5rem; }
+    ul.object-list { list-style: none; padding: 0; }
+    ul.object-list li { padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb; }
+    .muted { color: #6b7280; font-size: 0.875rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="/">Newslytics</a>
+    <a href="{% url 'news:list' %}">News</a>
+    <a href="{% url 'domains:list' %}">Domains</a>
+    <a href="{% url 'people:list' %}">People</a>
+    <a href="{% url 'places:list' %}">Places</a>
+    <a href="{% url 'objects:list' %}">Things</a>
+    <a href="{% url 'crawling:list' %}">Crawls</a>
+    <a href="{% url 'streams:list' %}">Streams</a>
+    <a href="/admin/">Admin</a>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}People — Newslytics{% endblock %}
+
+{% block content %}
+<h1>People</h1>
+<ul class="object-list">
+  {% for person in object_list %}
+  <li><a href="{% url 'people:detail' person.pk %}">{{ person.name }}</a></li>
+  {% empty %}
+  <li>No people yet. Authors are added as articles are crawled.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

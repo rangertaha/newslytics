@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: newslytics
+          POSTGRES_USER: newslytics
+          POSTGRES_PASSWORD: newslytics
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U newslytics"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt -r requirements-dev.txt
+          # Security override past newspaper4k's lxml<6 cap (see requirements.txt)
+          pip install -U "lxml>=6.1.1" "lxml-html-clean>=0.4.5"
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Django system checks
+        run: python manage.py check
+
+      - name: Check for missing migrations
+        run: python manage.py makemigrations --check --dry-run
+
+      - name: Run tests
+        run: python manage.py test

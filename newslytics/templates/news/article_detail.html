@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}{{ object.title }} — Newslytics{% endblock %}
+
+{% block content %}
+<h1>{{ object.title }}</h1>
+<p class="muted">
+  {% if object.published %}{{ object.published|date:"Y-m-d H:i" }} —{% endif %}
+  {% if object.domain %}{{ object.domain }} —{% endif %}
+  <a href="{{ object.url }}" rel="noopener">original</a>
+</p>
+{% if object.authors.exists %}
+<p class="muted">By
+  {% for author in object.authors.all %}{{ author.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+</p>
+{% endif %}
+{% if object.description %}<p><strong>{{ object.description }}</strong></p>{% endif %}
+{{ object.text|linebreaks }}
+{% if object.sentiment %}
+<p class="muted">Sentiment: {{ object.sentiment }}</p>
+{% endif %}
+{% endblock %}

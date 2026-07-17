@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}Crawl {{ object.pk }} — Newslytics{% endblock %}
+
+{% block content %}
+<h1>Crawl of {{ object.domain }}</h1>
+<p class="muted">{{ object.otype }} — {{ object.created|date:"Y-m-d H:i" }} — {{ object.count }} item{{ object.count|pluralize }}</p>
+{% if object.error %}<pre>{{ object.error }}</pre>{% endif %}
+{% endblock %}

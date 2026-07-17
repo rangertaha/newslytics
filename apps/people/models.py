@@ -17,17 +17,17 @@ class Person(models.Model):
     valid = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{self.first} {self.middle} {self.last}'
+        return self.name()
 
     def name(self):
-        return f'{self.first} {self.middle} {self.last}'.strip()
+        return ' '.join(p for p in (self.first, self.middle, self.last) if p)
 
 
 class SocialAccount(models.Model):
     ACCOUNT_CHOICES = (
         ('facebook', 'Facebook'),
         ('twitter', 'Twitter'),
-        ('linkedlin', 'LinkedIn'),
+        ('linkedin', 'LinkedIn'),
         ('google+', 'Google+'),
         ('youtube', 'YouTube'),
         ('instagram', 'Instagram'),
@@ -38,7 +38,7 @@ class SocialAccount(models.Model):
         ('flickr', 'Flickr'),
         ('foursquare', 'Foursquare'),
         ('kik', 'Kik'),
-        ('yikyak', 'Yik Yah'),
+        ('yikyak', 'Yik Yak'),
         ('shots', 'Shots'),
         ('periscope', 'Periscope'),
     )

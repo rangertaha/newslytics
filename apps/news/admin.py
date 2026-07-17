@@ -1,8 +1,7 @@
 
 from django.contrib import admin
 
-# Register your models here.
-from .models import Article, Feed
+from .models import Article, Feed, Language
 
 
 @admin.register(Article)
@@ -15,9 +14,9 @@ class ArticleAdmin(admin.ModelAdmin):
     search_fields = ('title', 'description', 'url', 'text', 'html')
 
 
-# @admin.register(Language)
-# class LanguageAdmin(admin.ModelAdmin):
-#     list_display = ('code', 'name')
+@admin.register(Language)
+class LanguageAdmin(admin.ModelAdmin):
+    list_display = ('code', 'name')
 
 
 @admin.register(Feed)

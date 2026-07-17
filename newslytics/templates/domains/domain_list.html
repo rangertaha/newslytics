@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Domains — Newslytics{% endblock %}
+
+{% block content %}
+<h1>Domains</h1>
+<ul class="object-list">
+  {% for domain in object_list %}
+  <li>
+    <a href="{% url 'domains:detail' domain.pk %}">{{ domain }}</a>
+    {% if domain.title %}<span class="muted">— {{ domain.title }}</span>{% endif %}
+  </li>
+  {% empty %}
+  <li>No domains yet. Run <code>./manage.py load_domains data/domains.txt</code>.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

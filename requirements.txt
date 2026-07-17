@@ -21,3 +21,19 @@ feedparser>=6.0
 tldextract>=5.1
 langdetect>=1.0.9
 vaderSentiment>=3.3
+
+# --- Deployment --------------------------------------------------------------
+gunicorn>=22.0              # WSGI server used by the Dockerfile
+whitenoise>=6.7             # serves STATIC_ROOT from the app process
+
+# --- Security override -------------------------------------------------------
+# newspaper4k 0.9.5 caps lxml at <6.0, but lxml < 6.1 is vulnerable to
+# PYSEC-2026-87 (XXE local file read from untrusted XML/HTML) and
+# lxml-html-clean < 0.4.5 to PYSEC-2026-2614 (javascript: URLs survive
+# cleaning). newspaper4k works fine on lxml 6.x, so after installing this
+# file force-upgrade past the cap (pip prints a resolver warning; expected):
+#
+#   pip install -U "lxml>=6.1.1" "lxml-html-clean>=0.4.5"
+#
+# `make install` does both steps. Drop this override once newspaper4k
+# publishes a release that allows lxml >= 6.

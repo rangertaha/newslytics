@@ -19,8 +19,10 @@ class Command(BaseCommand):
         for lpath in options.get('file'):
             if os.path.isfile(lpath):
                 with open(lpath) as f:
-                    lines = f.readlines()
-                    for line in lines:
+                    for line in f:
+                        line = line.strip()
+                        if not line:
+                            continue
                         url = 'http://' + line
 
                         try:

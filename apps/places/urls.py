@@ -2,9 +2,9 @@ from django.urls import path
 
 from . import views
 
-app_name = 'crawling'
+app_name = 'places'
 
 urlpatterns = [
     path('', views.ListView.as_view(), name='list'),
-    path('<int:pk>/', views.DetailView.as_view(), name='detail'),
+    path('<slug:slug>/', views.DetailView.as_view(), name='detail'),
 ]

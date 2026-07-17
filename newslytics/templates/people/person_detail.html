@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}{{ object.name }} — Newslytics{% endblock %}
+
+{% block content %}
+<h1>{{ object.name }}</h1>
+{% if object.description %}{{ object.description|linebreaks }}{% endif %}
+{% if object.accounts.exists %}
+<h2>Social accounts</h2>
+<ul class="object-list">
+  {% for account in object.accounts.all %}
+  <li><a href="{{ account.url }}" rel="noopener">{{ account.get_type_display|default:account.url }}</a></li>
+  {% endfor %}
+</ul>
+{% endif %}
+<h2>Articles</h2>
+<ul class="object-list">
+  {% for article in object.authors.all %}
+  <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+  {% empty %}
+  <li class="muted">No articles by this person.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
